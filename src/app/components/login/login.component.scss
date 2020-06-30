@@ -11,7 +11,7 @@
         border-radius:6px;
         border:1px solid #dcdcdc;
         color:#666666;
-        padding:40px;
+        padding:40px 0 40px 40px;
         display: grid;
         justify-items: center;
         width: 25%;
@@ -21,24 +21,41 @@
         .text-title {
             font-weight: bold;
             margin: 0 0 8px 0;
+            display: flex;
+            justify-self: start;
         }
 
-        .input-text {
-            padding: 8px 8px;
-            margin: 8px 0 8px 0;
-            display:block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        .container-input {
+            display: inline-flex;
+            align-items: center;
             width: 100%;
+
+            .input-text {
+                padding: 8px 8px;
+                margin: 8px 0 8px 0;
+                display:block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                width: 90%;
+            }
+
+            .text-error {
+                color: red;
+                font-size: 14px;
+                margin: 0 0 0 5px;
+                font-weight: bold;
+            }
         }
-    
+
         .button-signin {
-            width: 100%;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            justify-self: start;
             box-shadow:inset 0px 1px 0px 0px #7a8eb9;
             background-color:#637aad;
             border:1px solid #314179;
-            display:block;
             cursor:pointer;
             color:#ffffff;
             font-family:Arial;
@@ -54,6 +71,12 @@
         .button-signin:active {
             position:relative;
             top:1px;
+        }
+
+        .text-error-login {
+            color: red;
+            font-size: 14px;
+            margin: 5px 0 5px 0;
         }
     }
 }

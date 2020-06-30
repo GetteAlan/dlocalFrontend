@@ -1,8 +1,18 @@
 <div class="container-main">
     <form class="container-form" [formGroup]="formLogin" novalidate (ngSubmit)="onSubmit()">
         <p class="text-title">SIGN IN TO YOUR ACCOUNT</p>
-        <input class="input-text" type="email" formControlName="email" placeholder="User email">
-        <input class="input-text" type="password" formControlName="password" placeholder="Password">
+        
+        <div class="container-input">
+            <input class="input-text" type="email" formControlName="username" placeholder="User email">
+            <p class="text-error" *ngIf="formLogin.get('username').invalid">*</p>
+        </div>
+
+        <div class="container-input">
+            <input class="input-text" type="password" formControlName="password" placeholder="Password">
+            <p class="text-error" *ngIf="formLogin.get('password').invalid">*</p>
+        </div>
+
         <button class="button-signin" type="submit" [disabled]="formLogin.invalid">SIGN IN</button>
+        <p class="text-error-login" *ngIf="wronglogin">Usuario o contraseña no válida.</p>
     </form>
 </div>

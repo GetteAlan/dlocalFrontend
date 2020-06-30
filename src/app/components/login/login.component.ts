@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { User } from 'src/app/shared/user';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   formLogin: FormGroup;
-  
+  wronglogin:boolean;
+
   constructor(
     private formBuilder:FormBuilder, 
     private authenticationService:AuthenticationService,
@@ -21,25 +23,36 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.authenticationService.isLoggedin()){
+    if(this.authenticationService.isLogged()){
       this.router.navigate(['home']);
     }
   }
 
   createForm(){
     this.formLogin = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
   }
 
   onSubmit(){
-    this.authenticationService.login().then(result=>{
-      if(result){
-        if(this.authenticationService.isLoggedin()){
+    let user:User = this.formLogin.value;
+    this.authenticationService.login(user).subscribe((user)=>{
+      if(user){
+        if(user.username === user.username && user.password === user.password){
+          this.authenticationService.updateSession(true);
           this.router.navigate(['home']);
+        }else {
+          this.authenticationService.updateSession(false);
+          this.wronglogin = true;
         }
+      }else{
+        this.authenticationService.updateSession(false);
+        this.wronglogin = true;
       }
     });
   }
+
+
+
 }

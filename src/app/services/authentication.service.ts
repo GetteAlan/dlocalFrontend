@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Session } from '../shared/session';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AuthenticationService {
 
   private session:Session;
-  private baseURL:string = 'http://localhost:8080/';
+  private baseURL:string = 'http://localhost:3000/';
   private sendMessageSubject = new Subject<Session>();
   sessionSubject = this.sendMessageSubject.asObservable();
 
@@ -18,32 +19,27 @@ export class AuthenticationService {
     this.sendMessageSubject.next(this.session);
   }
 
-  login():Promise<boolean>{
-    
-    let promise = new Promise<boolean>((resolve, reject) => {
-      this.session.loggedin = true;
+  login(userRequest:User):Observable<User>{
 
-      let httpOptiones = { 
-        headers: new HttpHeaders({
-          'Content-Type':'application/json'
-        })
-      };
-      
-      this.http.get(this.baseURL + 'login', this.session, httpOptiones);
+    let httpOptiones = { 
+      headers: new HttpHeaders({
+        'Content-Type':'application/json'
+      })
+    };
 
-
-      this.sendMessageSubject.next(this.session);
-      resolve(this.session.loggedin);
-    });
-    return promise;
+    return this.http.post<User>(this.baseURL + 'login', userRequest, httpOptiones);
   }
 
-  logout(){
-    this.session.loggedin = false;
+  updateSession(logged:boolean){
+    this.session.loggedin = logged;
     this.sendMessageSubject.next(this.session);
   }
 
-  isLoggedin(){
+  logout(){
+    this.updateSession(false);
+  }
+
+  isLogged(){
     return this.session.loggedin;
   }
 

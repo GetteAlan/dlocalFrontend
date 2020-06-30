@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private router:Router, private authenticationService:AuthenticationService) { 
     this.authenticationService.sessionSubject.subscribe((session) => {
       if(!session.loggedin){
-        if(!this.authenticationService.isLoggedin()){
+        if(!this.authenticationService.isLogged()){
           this.router.navigate(['login']);
         }
       }
@@ -19,19 +19,13 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!this.authenticationService.isLoggedin()){
+    if(!this.authenticationService.isLogged()){
       this.router.navigate(['login']);
     }
   }
 
-  login(){
-    this.authenticationService.login().then();
-    
-  }
-
   logout(){
     this.authenticationService.logout();
-
   }
 
   getUrl(){

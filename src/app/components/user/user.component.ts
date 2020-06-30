@@ -12,7 +12,7 @@ export class UserComponent implements OnInit {
   constructor(private router:Router, private authenticationService:AuthenticationService) { 
     this.authenticationService.sessionSubject.subscribe((session) => {
       if(!session.loggedin){
-        if(!this.authenticationService.isLoggedin()){
+        if(!this.authenticationService.isLogged()){
           this.router.navigate(['login']);
         }
       }
@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!this.authenticationService.isLoggedin()){
+    if(!this.authenticationService.isLogged()){
       this.router.navigate(['login']);
     }
   }
